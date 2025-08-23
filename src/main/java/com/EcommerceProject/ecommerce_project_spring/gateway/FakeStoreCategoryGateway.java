@@ -24,8 +24,12 @@ public class FakeStoreCategoryGateway implements ICategoryGateway{
         if (fakeStoreCategoryResponseDTO == null) {
             throw new IOException("Failed to fetch categories from FakeStore API");
         }
-        return fakeStoreCategoryResponseDTO.getCategories().stream().map(category -> CategoryDTO.builder()
+        System.out.println("Fake Store Category Response: " + fakeStoreCategoryResponseDTO);
+        return fakeStoreCategoryResponseDTO.getCategories()
+                .stream()
+                .map(category -> CategoryDTO.builder()
                 .name(category)
-                .build()).toList();
+                .build())
+                .toList();
     }
 }

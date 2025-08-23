@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class FakeStoreCategoryResponseDTO {
 
     private String status;
