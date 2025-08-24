@@ -2,6 +2,8 @@ package com.EcommerceProject.ecommerce_project_spring.gateway;
 
 import com.EcommerceProject.ecommerce_project_spring.dtos.CategoryDTO;
 import com.EcommerceProject.ecommerce_project_spring.dtos.FakeStoreCategoryResponseDTO;
+import com.EcommerceProject.ecommerce_project_spring.dtos.FakeStoreProductsByCategoryResponseDTO;
+import com.EcommerceProject.ecommerce_project_spring.dtos.ProductsByCategoryDTO;
 import com.EcommerceProject.ecommerce_project_spring.gateway.api.FakeStoreCategoryApi;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +26,31 @@ public class FakeStoreCategoryGateway implements ICategoryGateway{
         if (fakeStoreCategoryResponseDTO == null) {
             throw new IOException("Failed to fetch categories from FakeStore API");
         }
-        System.out.println("Fake Store Category Response: " + fakeStoreCategoryResponseDTO);
         return fakeStoreCategoryResponseDTO.getCategories()
                 .stream()
                 .map(category -> CategoryDTO.builder()
                 .name(category)
                 .build())
+                .toList();
+    }
+
+    @Override
+    public List<ProductsByCategoryDTO> getAllProductsByCategory(String category) throws IOException {
+        FakeStoreProductsByCategoryResponseDTO fakeStoreProductsByCategoryResponseDTO = this.fakeStoreCategoryApi.getAllProductsByCategory(category).execute().body();
+
+        if(fakeStoreProductsByCategoryResponseDTO == null) {
+            throw new IOException("Failed to fetch products by category from FakeStore API");
+        }
+
+        return fakeStoreProductsByCategoryResponseDTO.getProducts()
+                .stream()
+                .map(product -> ProductsByCategoryDTO.builder()
+                        .title(product.getTitle())
+                        .description(product.getDescription())
+                        .price(product.getPrice())
+                        .image(product.getImage())
+                        .brand(product.getBrand())
+                        .build())
                 .toList();
     }
 }
