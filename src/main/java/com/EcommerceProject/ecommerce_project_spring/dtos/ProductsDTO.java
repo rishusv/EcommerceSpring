@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductsByCategoryDTO {
+public class ProductsDTO {
     private String title;
     private String image;
     private double price;

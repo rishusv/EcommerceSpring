@@ -1,8 +1,7 @@
 package com.EcommerceProject.ecommerce_project_spring.controller;
 
 import com.EcommerceProject.ecommerce_project_spring.dtos.CategoryDTO;
-import com.EcommerceProject.ecommerce_project_spring.dtos.ProductsByCategoryDTO;
-import com.EcommerceProject.ecommerce_project_spring.service.FakeStoreCategoryService;
+import com.EcommerceProject.ecommerce_project_spring.dtos.ProductsDTO;
 import com.EcommerceProject.ecommerce_project_spring.service.ICategoryService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,12 @@ public class CategoryController {
     }
 
     @GetMapping("/products")
-    public List<ProductsByCategoryDTO> getProductsByCategory(@RequestParam String type) throws IOException {
+    public List<ProductsDTO> getProductsByCategory(@RequestParam String type) throws IOException {
         return this.categoryService.getProductsByCategory(type);
+    }
+
+    @GetMapping("/product/{id}")
+    public ProductsDTO getSingleProductById(@PathVariable Long id) throws IOException {
+        return this.categoryService.getProductById(id); // Placeholder return statement
     }
 }

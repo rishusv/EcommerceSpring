@@ -1,9 +1,6 @@
 package com.EcommerceProject.ecommerce_project_spring.gateway;
 
-import com.EcommerceProject.ecommerce_project_spring.dtos.CategoryDTO;
-import com.EcommerceProject.ecommerce_project_spring.dtos.FakeStoreCategoryResponseDTO;
-import com.EcommerceProject.ecommerce_project_spring.dtos.FakeStoreProductsByCategoryResponseDTO;
-import com.EcommerceProject.ecommerce_project_spring.dtos.ProductsByCategoryDTO;
+import com.EcommerceProject.ecommerce_project_spring.dtos.*;
 import com.EcommerceProject.ecommerce_project_spring.gateway.api.FakeStoreCategoryApi;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +32,7 @@ public class FakeStoreCategoryGateway implements ICategoryGateway{
     }
 
     @Override
-    public List<ProductsByCategoryDTO> getAllProductsByCategory(String category) throws IOException {
+    public List<ProductsDTO> getAllProductsByCategory(String category) throws IOException {
         FakeStoreProductsByCategoryResponseDTO fakeStoreProductsByCategoryResponseDTO = this.fakeStoreCategoryApi.getAllProductsByCategory(category).execute().body();
 
         if(fakeStoreProductsByCategoryResponseDTO == null) {
@@ -44,7 +41,7 @@ public class FakeStoreCategoryGateway implements ICategoryGateway{
 
         return fakeStoreProductsByCategoryResponseDTO.getProducts()
                 .stream()
-                .map(product -> ProductsByCategoryDTO.builder()
+                .map(product -> ProductsDTO.builder()
                         .title(product.getTitle())
                         .description(product.getDescription())
                         .price(product.getPrice())
@@ -53,4 +50,17 @@ public class FakeStoreCategoryGateway implements ICategoryGateway{
                         .build())
                 .toList();
     }
+
+    @Override
+    public ProductsDTO getProductById(Long id) throws IOException {
+        FakeStoreSingleProductResponseDTO fakeStoreSingleProductResponseDTO = this.fakeStoreCategoryApi.getProductById(id).execute().body();
+
+        if(fakeStoreSingleProductResponseDTO == null) {
+            throw new IOException("Failed to fetch product by ID from FakeStore API");
+        }
+        System.out.println(fakeStoreSingleProductResponseDTO);
+        return fakeStoreSingleProductResponseDTO.getProduct();
+    }
+
+
 }
